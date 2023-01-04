@@ -14,18 +14,23 @@ const refs = {
 };
 
 const handleCountiesInput = event => {
-  refs.listCountry.innerHTML = '';
-  refs.countryInfo.innerHTML = '';
-
   const inputValue = event.target.value.trim();
-  console.log(inputValue);
+
+  if (inputValue === '') {
+    refs.listCountry.innerHTML = '';
+    refs.countryInfo.innerHTML = '';
+    return;
+  }
+
   fetchCountriesName(inputValue)
     .then(data => {
       if (data.length === 1) {
-        return (refs.countryInfo.innerHTML = country(data));
+        refs.countryInfo.innerHTML = country(data);
+        return;
       } else if (data.length > 1 && data.length <= 10) {
-        return (refs.listCountry.innerHTML = countryList(data));
-      } else if (data.length > 10) {
+        refs.listCountry.innerHTML = countryList(data);
+        return;
+      } else {
         Notiflix.Notify.info(
           'Too many matches found. Please enter a more specific name.'
         );
